@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {ScrollView, Text, StyleSheet} from 'react-native';
 import {Card, ListItem} from 'react-native-elements';
-import { LEADERS } from '../shared/leaders';
 import { FlatList } from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
+import {baseUrl} from '../shared/baseUrl';
 
 function History() {
     return (
@@ -24,13 +25,6 @@ function History() {
 }
 
 class About extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            leaders: LEADERS,
-        };
-    }
 
     static navigationOptions = {
         title: 'About Us',
@@ -43,7 +37,7 @@ class About extends Component {
                     key={item.id.toString()}
                     title={item.name}
                     subtitle={item.description}
-                    leftAvatar={{source: require('./images/alberto.png')}}
+                    leftAvatar={{source: { uri: baseUrl + item.image }}}
                     hideChevron
                 />
             )
@@ -56,7 +50,7 @@ class About extends Component {
                     title="Corporate Leadership"
                 >
                     <FlatList
-                        data={this.state.leaders}
+                        data={this.props.leaders.leaders}
                         renderItem={renderMenuItem}
                         keyExtractor={item => item.id.toString()}
                     />
@@ -72,4 +66,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default About;
+const mapStateToProps = state => ({
+    leaders: state.leaders,
+});
+
+export default connect(mapStateToProps)(About);
