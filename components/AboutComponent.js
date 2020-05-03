@@ -55,6 +55,17 @@ class About extends Component {
                     </Card>
                 </ScrollView>
             )
+        } else if (this.props.leaders.errMess) {
+            return (
+                <ScrollView>
+                    <History />
+                    <Card
+                        title="Corporate Leadership"
+                    >
+                        <Text>{this.props.leaders.errMess}</Text>
+                    </Card>
+                </ScrollView>
+            )
         }
 
         return (
