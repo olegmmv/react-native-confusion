@@ -4,6 +4,7 @@ import {Card, ListItem} from 'react-native-elements';
 import { FlatList } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 function History() {
     return (
@@ -42,6 +43,19 @@ class About extends Component {
                 />
             )
         };
+
+        if (this.props.leaders.isLoading) {
+            return (
+                <ScrollView>
+                    <History />
+                    <Card
+                        title="Corporate Leadership"
+                    >
+                        <Loading />
+                    </Card>
+                </ScrollView>
+            )
+        }
 
         return (
             <ScrollView>
