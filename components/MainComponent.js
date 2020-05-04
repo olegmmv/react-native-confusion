@@ -6,7 +6,8 @@ import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
 import Contact from './ContactComponent';
-import About from './AboutComponent';   
+import About from './AboutComponent';
+import Reservation from './ReservationComponent';
 import {connect} from 'react-redux';
 import {fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
 
@@ -82,6 +83,12 @@ const AboutNavigator = createStackNavigator({
     navigationOptions: navOptions,
 });
 
+const ReservationNavigator = createStackNavigator({
+    Reservation: { screen: Reservation },
+}, {
+    navigationOptions: navOptions,
+});
+
 const MainNavigator = createDrawerNavigator({
     Home: {
         screen: HomeNavigator,
@@ -120,6 +127,16 @@ const MainNavigator = createDrawerNavigator({
             drawerLabel: 'Contact Us',
             drawerIcon: ({tintColor}) => (
                 <Icon name="address-card" type="font-awesome" size={22} color={tintColor} />
+            )
+        },
+    },
+    Reservation: {
+        screen: ReservationNavigator,
+        navigationOptions: {
+            title: 'Reserve Table',
+            drawerLabel: 'Reserve Table',
+            drawerIcon: ({tintColor}) => (
+                <Icon name="cutlery" type="font-awesome" size={24} color={tintColor} />
             )
         },
     },
