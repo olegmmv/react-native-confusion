@@ -14,7 +14,7 @@ class Reservation extends Component {
         }
 
         this.handleReservation = this.handleReservation.bind(this);
-        // this.toggleModal = this.toggleModal.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.resetForm = this.resetForm.bind(this);
     }
 
@@ -23,7 +23,6 @@ class Reservation extends Component {
     }
 
     toggleModal() {
-        console.log(!this.state.showModal);
         this.setState({showModal: !this.state.showModal})
     }
 

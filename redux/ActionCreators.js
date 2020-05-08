@@ -132,7 +132,7 @@ export const addLeaders = (leaders) => ({
     payload: leaders,
 });
 
-// Favorites
+// Favorite
 export const postFavorite = (dishId) => (dispatch) => {
     setTimeout(() => {
         dispatch(addFavorite(dishId))
@@ -142,4 +142,24 @@ export const postFavorite = (dishId) => (dispatch) => {
 export const addFavorite = (dishId) => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: dishId,
+});
+
+// Comment
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+    const dishComment = {
+            dishId,
+            rating,
+            author,
+            comment,
+            date: new Date().toISOString(),
+    };
+
+    setTimeout(() => {
+        dispatch(addComment(dishComment));
+    }, 2000);
+}
+
+export const addComment = (comment) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment,
 });
