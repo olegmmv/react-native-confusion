@@ -9,12 +9,18 @@ import * as Animatable from 'react-native-animatable';
 function RenderDish(props) {
     const {dish} = props;
 
+    handleViewRef = ref => this.view = ref;
+
     const recognizeDrag = ({moveX, moveY, dx, dy}) => {
         return dx < -100;
     };
 
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e, gestureState) => true,
+        onPanResponderGrant: () => {
+            this.view.rubberBand(1000)
+                .then(endState => console.log(endState.fiinished ? 'finished' : 'cancelled'));
+        },
         onPanResponderEnd: (e, gestureState) => {
             if (recognizeDrag(gestureState)) {
                 Alert.alert(
@@ -33,7 +39,7 @@ function RenderDish(props) {
                     ],
                     {cancelable: true}
                 )
-            }
+            } 
 
             return true;
         }
@@ -44,7 +50,13 @@ function RenderDish(props) {
     }
 
     return (
-        <Animatable.View animation="fadeInDown" duration={2000} delay={1000} {...panResponder.panHandlers}>
+        <Animatable.View 
+            animation="fadeInDown" 
+            duration={2000} 
+            delay={1000} 
+            ref={this.handleViewRef}
+            {...panResponder.panHandlers}
+        >
             <Card
                 featuredTitle={dish.name}
                 image={{ uri: baseUrl + dish.image }}
