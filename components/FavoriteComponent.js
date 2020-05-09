@@ -6,6 +6,7 @@ import {baseUrl} from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
 import Swipeout from 'react-native-swipeout';
 import {deleteFavorite} from '../redux/ActionCreators'; 
+import * as Animatable from 'react-native-animatable';
 
 class Favorites extends Component {
     constructor(props) {
@@ -47,14 +48,16 @@ class Favorites extends Component {
 
             return (
                 <Swipeout right={rightButton} autoClose>
-                    <ListItem
-                        key={item.id}
-                        title={item.name}
-                        subtitle={item.description}
-                        onPress={() => navigate('Dishdetail', {dishId: item.id})}
-                        leftAvatar={{source: {  uri: baseUrl + item.image}}}
-                        hideChevron
-                    />
+                    <Animatable.View animation="fadeInRightBig" duration={2000}>
+                        <ListItem
+                            key={item.id}
+                            title={item.name}
+                            subtitle={item.description}
+                            onPress={() => navigate('Dishdetail', {dishId: item.id})}
+                            leftAvatar={{source: {  uri: baseUrl + item.image}}}
+                            hideChevron
+                        />
+                    </Animatable.View>
                 </Swipeout>
             )
         }

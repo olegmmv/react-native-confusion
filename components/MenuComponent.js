@@ -4,6 +4,7 @@ import {Tile} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 class Menu extends Component {
 
@@ -16,14 +17,16 @@ class Menu extends Component {
 
         const renderMenuItem = ({item}) => {
             return (
-                <Tile 
-                    key={item.id.toString()}
-                    title={item.name}
-                    caption={item.description}
-                    imageSrc={{uri: baseUrl + item.image}}
-                    onPress={() => navigate('Dishdetail', {dishId: item.id})}
-                    featured
-                />
+                <Animatable.View animation="fadeInRightBig" duration={2000}>
+                    <Tile 
+                        key={item.id.toString()}
+                        title={item.name}
+                        caption={item.description}
+                        imageSrc={{uri: baseUrl + item.image}}
+                        onPress={() => navigate('Dishdetail', {dishId: item.id})}
+                        featured
+                    />
+                </Animatable.View>
             )
         };
 
