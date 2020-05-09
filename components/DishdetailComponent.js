@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, ScrollView, FlatList, Modal, StyleSheet, Button, SafeAreaView} from 'react-native';
+import {View, Text, ScrollView, FlatList, Modal, StyleSheet, Button, SafeAreaView, PanResponder, Alert} from 'react-native';
 import {Card, Icon, Rating, Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
@@ -9,12 +9,42 @@ import * as Animatable from 'react-native-animatable';
 function RenderDish(props) {
     const {dish} = props;
 
+    const recognizeDrag = ({moveX, moveY, dx, dy}) => {
+        return dx < -100;
+    };
+
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (e, gestureState) => true,
+        onPanResponderEnd: (e, gestureState) => {
+            if (recognizeDrag(gestureState)) {
+                Alert.alert(
+                    'Add to Favorites?',
+                    `Are you shure you wish to add ${dish.name} to your Favorites?`,
+                    [
+                        {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel pressed'),
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => props.favorite ? console.log('Already favorite') : props.onPress(),
+                        }
+                    ],
+                    {cancelable: true}
+                )
+            }
+
+            return true;
+        }
+    })
+
     if (!dish) {
         return <View />;
     }
 
     return (
-        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000} {...panResponder.panHandlers}>
             <Card
                 featuredTitle={dish.name}
                 image={{ uri: baseUrl + dish.image }}
