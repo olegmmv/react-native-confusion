@@ -12,7 +12,11 @@ function RenderDish(props) {
     handleViewRef = ref => this.view = ref;
 
     const recognizeDrag = ({moveX, moveY, dx, dy}) => {
-        return dx < -100;
+        return dx < -200;
+    };
+
+    const recognizeComment = ({moveX, moveY, dx, dy}) => {
+        return dx > 200;
     };
 
     const panResponder = PanResponder.create({
@@ -39,7 +43,9 @@ function RenderDish(props) {
                     ],
                     {cancelable: true}
                 )
-            } 
+            } else if (recognizeComment(gestureState)) {
+                props.onEdit();
+            }
 
             return true;
         }

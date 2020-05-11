@@ -9,7 +9,8 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoriteComponent';
-import {connect} from 'react-redux';
+import Login from './LoginComponent';
+    import {connect} from 'react-redux';
 import {fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
 
 const baseNavOptions = {
@@ -96,7 +97,23 @@ const FavoritesNavigator = createStackNavigator({
     navigationOptions: navOptions,
 });
 
+const LoginNavigator = createStackNavigator({
+    Login: { screen: Login },
+}, {
+    navigationOptions: navOptions,
+});
+
 const MainNavigator = createDrawerNavigator({
+    Login: {
+        screen: LoginNavigator,
+        navigationOptions: {
+            title: 'Login',
+            drawerLabel: 'Login',
+            drawerIcon: ({tintColor}) => (
+                <Icon name="sign-in" type="font-awesome" size={24} color={tintColor} />
+            )
+        },
+    },
     Home: {
         screen: HomeNavigator,
         navigationOptions: {
@@ -158,6 +175,7 @@ const MainNavigator = createDrawerNavigator({
         },
     },
 }, {
+    initialRouteName: 'Home',
     drawerBackgroundColor: '#D1C4E9',
     contentComponent: CustomDrawerContentComponent,
 })
