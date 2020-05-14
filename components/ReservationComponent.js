@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Alert} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as Animatable from 'react-native-animatable';
+import {Notifications} from 'expo';
+import * as Permissions from 'expo-permissions';
 
 class Reservation extends Component {
     constructor(props) {
@@ -14,6 +16,8 @@ class Reservation extends Component {
 
         this.handleReservation = this.handleReservation.bind(this);
         this.resetForm = this.resetForm.bind(this);
+        this.obtainNotificationPermission = this.obtainNotificationPermission.bind(this);
+        this.presentLocalNotification = this.presentLocalNotification   .bind(this);
     }
 
     static navigationOptions = {
@@ -26,6 +30,37 @@ class Reservation extends Component {
             smoking: false,
             date: '',
         });
+    }
+
+    async obtainNotificationPermission() {
+        let permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission is not granted to show notifications');
+            }
+        }
+
+        return permission;
+    }
+
+    async presentLocalNotification(date) {
+        await this.obtainNotificationPermission();
+        Notifications.presentLocalNotificationAsync({
+            title: 'Your reservation',
+            body: `Reservation for ${date} requested`,
+            ios: {
+                sound: true,
+                vibrate: true,
+            },
+            android: {
+                sound: true,
+                vibrate: true,
+                color: '#512DA8',
+            }
+        })
     }
 
     handleReservation() {
@@ -42,7 +77,10 @@ class Reservation extends Component {
                 },
                 {
                     text: 'OK',
-                    onPress: this.resetForm
+                    onPress: () => {
+                        this.presentLocalNotification(this.state.date);
+                        this.resetForm();
+                    }
                 }
             ],
             {cancelable: false}
